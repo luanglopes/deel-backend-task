@@ -1,6 +1,6 @@
 # DEEL BACKEND TASK
 
-  
+> Improvements and documentation included at the end  
 
 💫 Welcome! 🎉
 
@@ -82,7 +82,7 @@ Below is a list of the required API's for the application.
 
 1. ***POST*** `/jobs/:job_id/pay` - Pay for a job, a client can only pay if his balance >= the amount to pay. The amount should be moved from the client's balance to the contractor balance.
 
-1. ***POST*** `/balances/deposit/:userId` - Deposits money into the the the balance of a client, a client can't deposit more than 25% his total of jobs to pay. (at the deposit moment)
+1. ***POST*** `/balances/deposit/:userId` - Deposits money into the balance of a client, a client can't deposit more than 25% his total of jobs to pay. (at the deposit moment)
 
 1. ***GET*** `/admin/best-profession?start=<date>&end=<date>` - Returns the profession that earned the most money (sum of jobs paid) for any contactor that worked in the query time range.
 
@@ -124,3 +124,23 @@ When you have finished the assignment, create a github repository and send us th
   
 
 Thank you and good luck! 🙏
+
+
+## Improvements
+
+Here are some improvements that I think would be good to add as the system grows:
+
+- Unit tests
+- Integration tests
+- In order to separate responsibilities, move logic from the handler to a separate file, like services, and create layers as needed
+- Dockerize application
+- Add lint
+- Add CI/CD pipelines to run tests and lint
+
+## Documentation
+
+On the root of the repo there is the `insomnia_collection.json` file that you can import in order to have access to the requests.
+
+[Download Insomnia](https://insomnia.rest/download)
+
+[How to import a collection on Insomnia](https://docs.insomnia.rest/insomnia/import-export-data#import-data)
