@@ -56,17 +56,17 @@ jobsRouter.post('/:id/pay', getProfile, async (req, res) => {
             return res.status(404).end()
         }
 
-        if (job.paid) {
-            await t.rollback()
-            return res.status(400).json({ message: 'Job already paid' })
-        }
-
         const { price, Contract: contract } = job
         const { Client: client, Contractor: contractor } = contract
 
         if (client.id !== profile.id) {
             await t.rollback()
             return res.status(403).end()
+        }
+
+        if (job.paid) {
+            await t.rollback()
+            return res.status(400).json({ message: 'Job already paid' })
         }
 
         if (price > client.balance) {
