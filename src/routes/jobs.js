@@ -24,9 +24,10 @@ jobsRouter.get('/unpaid', getProfile, async (req, res) => {
     res.json(jobs)
 })
 
-jobsRouter.post('/:id/pay', async (req, res) => {
+jobsRouter.post('/:id/pay', getProfile, async (req, res) => {
     const { Job, Contract, Profile } = req.app.get('models')
     const sequelize = req.app.get('sequelize')
+    const { profile } = req
 
     const { id } = req.params
 
@@ -55,8 +56,18 @@ jobsRouter.post('/:id/pay', async (req, res) => {
             return res.status(404).end()
         }
 
+        if (job.paid) {
+            await t.rollback()
+            return res.status(400).json({ message: 'Job already paid' })
+        }
+
         const { price, Contract: contract } = job
         const { Client: client, Contractor: contractor } = contract
+
+        if (client.id !== profile.id) {
+            await t.rollback()
+            return res.status(403).end()
+        }
 
         if (price > client.balance) {
             await t.rollback()
