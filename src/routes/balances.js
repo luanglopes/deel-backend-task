@@ -10,6 +10,12 @@ balancesRouter.post('/deposit/:clientId', async (req, res) => {
     const { clientId }  = req.params
     const { amount } = req.body
 
+    const client = await Profile.findOne({ where: { id: clientId, type: 'client' } })
+
+    if (!client) {
+        return res.status(400).json({ message: 'Only existing clients can make deposits'})
+    }
+
     const t = await sequelize.transaction()
 
     try {
