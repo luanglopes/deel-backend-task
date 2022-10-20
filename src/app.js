@@ -13,7 +13,7 @@ app.set('models', sequelize.models)
  * FIX ME!
  * @returns contract by id
  */
-app.get('/contracts/:id', getProfile, async (req, res) =>{
+app.get('/contracts/:id', getProfile, async (req, res) => {
     const { Contract } = req.app.get('models')
     const { profile } = req
     const { id } = req.params
@@ -33,6 +33,25 @@ app.get('/contracts/:id', getProfile, async (req, res) =>{
     }
     
     res.json(contract)
+})
+
+app.get('/contracts', getProfile, async (req, res) => {
+    const { Contract } = req.app.get('models')
+    const { profile } = req
+
+    const contracts = await Contract.findAll({ 
+        where: {
+            status: {
+                [Op.not]: 'terminated'
+            },
+            [Op.or]: [
+                { ClientId: profile.id },
+                { ContractorId: profile.id }
+            ]
+        }
+    })
+
+    res.json(contracts)
 })
 
 module.exports = app;
